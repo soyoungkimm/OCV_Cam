@@ -32,6 +32,9 @@ namespace OCV
 
         Boolean isRecording = false;    // 녹음 On/Off
         Boolean isFace = false;           // 얼굴인식 On/Off
+        Boolean isSobel = false;
+        Boolean isDiff = false;
+
 
         VideoWriter Record;                  // video 전용 class
 
@@ -73,7 +76,82 @@ namespace OCV
                 Image1.Image = BitmapConverter.ToBitmap(dst);
             }*/
 
-            if (isRecording)  // 녹화중인 경우
+            video.Read(src); // 비디오 프레임 읽기
+
+
+            // sobel
+            if (isSobel) {
+                if (src.Empty()) return;
+
+                Cv2.CvtColor(src, dst, ColorConversionCodes.BGR2GRAY); // 그레이스케일로 변환
+
+                Cv2.Sobel(dst, dst, -1, 1, 0); // x 방향 미분
+                Cv2.Sobel(dst, dst, -1, 0, 1); // x 방향 미분
+
+                Image1.ImageIpl = dst;
+            }
+
+
+            //isDiff
+            if (isDiff)
+            {
+                if (src.Empty()) return;
+
+                //Cv2.CvtColor(src, src, ColorConversionCodes.BGR2GRAY); // 그레이스케일로 변환
+
+                Mat pre_frame = new Mat();
+                Mat diff = new Mat();
+                video.Read(pre_frame);
+
+                //double temp = 30.0;
+
+                //abs = Cv2.Abs(src - pre_frame);
+                Cv2.Absdiff(src, pre_frame, diff);
+
+                Cv2.CvtColor(diff, diff, ColorConversionCodes.BGR2GRAY);
+
+                int threshold = 100; // 임계값 설정
+                int diffPixelCount = Cv2.CountNonZero(diff);
+
+
+                if (diffPixelCount > threshold) {
+                    MessageBox.Show("움직임!!!");
+                }
+
+
+                // 절대 차이에 임계값을 적용하여 움직임을 식별
+                //Mat thresholded = new Mat();
+                //Cv2.Threshold(diff, thresholded, temp, 255.0, ThresholdTypes.Binary);
+
+                // 임계값을 적용한 이미지의 픽셀 값 합산
+                //Scalar sum = Cv2.Sum(thresholded);
+
+                // 픽셀 값의 총합을 기준으로 움직임이 있는지 판단
+                //double total = sum.Val0;
+
+
+
+
+                /*if (diff > 30.0) // 필요에 따라 임계값 조절
+                {
+                    // 움직임이 감지됨
+                    //Image1.ImageIpl = thresholded; // 차이 이미지 표시 또는 필요한 작업 수행
+                    isSobel = true;
+                }
+                else
+                {
+                    isSobel = false;
+                    // 유의미한 움직임이 없음
+                    // 움직임이 없는 프레임에 대한 작업을 수행하거나 비워둡니다.
+                }*/
+
+                //Image1.ImageIpl = diff;
+            }
+            
+
+
+
+            /*if (isRecording)  // 녹화중인 경우
             {
                 //Mat frame = new Mat(); // 프레임을 저장할 Mat 객체 생성
                 // 여기서 웹캠에서 프레임을 읽거나, 이미지 프레임을 생성하는 코드를 작성해야 합니다.
@@ -89,7 +167,7 @@ namespace OCV
             {
 
 
-            }
+            }*/
 
 
         }
@@ -263,6 +341,16 @@ namespace OCV
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button_isSobel_Click(object sender, EventArgs e)
+        {
+            isSobel = !isSobel;
+        }
+
+        private void button_isDiff_Click(object sender, EventArgs e)
+        {
+            isDiff = !isDiff;
         }
 
     }

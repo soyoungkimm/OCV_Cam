@@ -52,6 +52,8 @@
             this.button_Face = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.button_isSobel = new System.Windows.Forms.Button();
+            this.button_isDiff = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Image1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Image2)).BeginInit();
@@ -61,9 +63,10 @@
             // 
             this.Image1.BackColor = System.Drawing.Color.White;
             this.Image1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Image1.Location = new System.Drawing.Point(4, 49);
+            this.Image1.Location = new System.Drawing.Point(5, 61);
+            this.Image1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Image1.Name = "Image1";
-            this.Image1.Size = new System.Drawing.Size(768, 432);
+            this.Image1.Size = new System.Drawing.Size(877, 539);
             this.Image1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Image1.TabIndex = 0;
             this.Image1.TabStop = false;
@@ -72,9 +75,10 @@
             // 
             this.button_Record.ImageIndex = 1;
             this.button_Record.ImageList = this.imageList1;
-            this.button_Record.Location = new System.Drawing.Point(567, 7);
+            this.button_Record.Location = new System.Drawing.Point(648, 9);
+            this.button_Record.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_Record.Name = "button_Record";
-            this.button_Record.Size = new System.Drawing.Size(38, 38);
+            this.button_Record.Size = new System.Drawing.Size(43, 48);
             this.button_Record.TabIndex = 22;
             this.button_Record.UseVisualStyleBackColor = true;
             this.button_Record.Click += new System.EventHandler(this.button_Record_Click);
@@ -99,9 +103,10 @@
             this.button_Close.FlatAppearance.BorderSize = 0;
             this.button_Close.ImageIndex = 8;
             this.button_Close.ImageList = this.imageList1;
-            this.button_Close.Location = new System.Drawing.Point(733, 7);
+            this.button_Close.Location = new System.Drawing.Point(838, 9);
+            this.button_Close.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_Close.Name = "button_Close";
-            this.button_Close.Size = new System.Drawing.Size(38, 38);
+            this.button_Close.Size = new System.Drawing.Size(43, 48);
             this.button_Close.TabIndex = 20;
             this.button_Close.UseVisualStyleBackColor = true;
             this.button_Close.Click += new System.EventHandler(this.button_Close_Click);
@@ -119,9 +124,10 @@
             this.toolStripStatusLabel_etcname,
             this.toolStripStatusLabel_Etc,
             this.toolStripStatusLabel8});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 484);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 606);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(775, 24);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(886, 29);
             this.statusStrip1.TabIndex = 24;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -129,7 +135,7 @@
             // 
             this.toolStripStatusLabel2.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(39, 19);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(49, 24);
             this.toolStripStatusLabel2.Text = "Name";
             // 
             // toolStripStatusLabel_Name
@@ -140,14 +146,14 @@
             this.toolStripStatusLabel_Name.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel_Name.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripStatusLabel_Name.Name = "toolStripStatusLabel_Name";
-            this.toolStripStatusLabel_Name.Size = new System.Drawing.Size(63, 19);
+            this.toolStripStatusLabel_Name.Size = new System.Drawing.Size(78, 24);
             this.toolStripStatusLabel_Name.Text = "             ";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(29, 19);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(36, 24);
             this.toolStripStatusLabel1.Text = "Size";
             // 
             // toolStripStatusLabel_width
@@ -158,18 +164,18 @@
             this.toolStripStatusLabel_width.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel_width.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripStatusLabel_width.Name = "toolStripStatusLabel_width";
-            this.toolStripStatusLabel_width.Size = new System.Drawing.Size(51, 19);
+            this.toolStripStatusLabel_width.Size = new System.Drawing.Size(63, 24);
             this.toolStripStatusLabel_width.Text = "          ";
             // 
             // toolStripStatusLabel5
             // 
             this.toolStripStatusLabel5.Name = "toolStripStatusLabel5";
-            this.toolStripStatusLabel5.Size = new System.Drawing.Size(0, 19);
+            this.toolStripStatusLabel5.Size = new System.Drawing.Size(0, 24);
             // 
             // toolStripStatusLabel4
             // 
             this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(33, 19);
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(42, 24);
             this.toolStripStatusLabel4.Text = "Time";
             // 
             // toolStripStatusLabel_Time
@@ -179,14 +185,14 @@
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusLabel_Time.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel_Time.Name = "toolStripStatusLabel_Time";
-            this.toolStripStatusLabel_Time.Size = new System.Drawing.Size(51, 19);
+            this.toolStripStatusLabel_Time.Size = new System.Drawing.Size(63, 24);
             this.toolStripStatusLabel_Time.Text = "          ";
             // 
             // toolStripStatusLabel_etcname
             // 
             this.toolStripStatusLabel_etcname.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel_etcname.Name = "toolStripStatusLabel_etcname";
-            this.toolStripStatusLabel_etcname.Size = new System.Drawing.Size(35, 19);
+            this.toolStripStatusLabel_etcname.Size = new System.Drawing.Size(45, 24);
             this.toolStripStatusLabel_etcname.Text = " ETC ";
             // 
             // toolStripStatusLabel_Etc
@@ -196,13 +202,13 @@
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusLabel_Etc.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel_Etc.Name = "toolStripStatusLabel_Etc";
-            this.toolStripStatusLabel_Etc.Size = new System.Drawing.Size(51, 19);
+            this.toolStripStatusLabel_Etc.Size = new System.Drawing.Size(63, 24);
             this.toolStripStatusLabel_Etc.Text = "          ";
             // 
             // toolStripStatusLabel8
             // 
             this.toolStripStatusLabel8.Name = "toolStripStatusLabel8";
-            this.toolStripStatusLabel8.Size = new System.Drawing.Size(408, 19);
+            this.toolStripStatusLabel8.Size = new System.Drawing.Size(430, 24);
             this.toolStripStatusLabel8.Spring = true;
             this.toolStripStatusLabel8.Text = " ";
             // 
@@ -211,9 +217,10 @@
             this.button_Capture.BackColor = System.Drawing.SystemColors.Control;
             this.button_Capture.ImageIndex = 0;
             this.button_Capture.ImageList = this.imageList1;
-            this.button_Capture.Location = new System.Drawing.Point(528, 7);
+            this.button_Capture.Location = new System.Drawing.Point(603, 9);
+            this.button_Capture.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_Capture.Name = "button_Capture";
-            this.button_Capture.Size = new System.Drawing.Size(38, 38);
+            this.button_Capture.Size = new System.Drawing.Size(43, 48);
             this.button_Capture.TabIndex = 38;
             this.button_Capture.UseVisualStyleBackColor = false;
             this.button_Capture.Click += new System.EventHandler(this.button_Capture_Click);
@@ -223,9 +230,10 @@
             this.button_Play.BackColor = System.Drawing.SystemColors.Control;
             this.button_Play.ImageIndex = 3;
             this.button_Play.ImageList = this.imageList1;
-            this.button_Play.Location = new System.Drawing.Point(606, 7);
+            this.button_Play.Location = new System.Drawing.Point(693, 9);
+            this.button_Play.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_Play.Name = "button_Play";
-            this.button_Play.Size = new System.Drawing.Size(38, 38);
+            this.button_Play.Size = new System.Drawing.Size(43, 48);
             this.button_Play.TabIndex = 40;
             this.button_Play.UseVisualStyleBackColor = false;
             this.button_Play.Click += new System.EventHandler(this.button_Play_Click);
@@ -235,9 +243,10 @@
             this.button_Open2.BackColor = System.Drawing.SystemColors.Control;
             this.button_Open2.ImageIndex = 7;
             this.button_Open2.ImageList = this.imageList1;
-            this.button_Open2.Location = new System.Drawing.Point(688, 7);
+            this.button_Open2.Location = new System.Drawing.Point(786, 9);
+            this.button_Open2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_Open2.Name = "button_Open2";
-            this.button_Open2.Size = new System.Drawing.Size(38, 38);
+            this.button_Open2.Size = new System.Drawing.Size(43, 48);
             this.button_Open2.TabIndex = 41;
             this.button_Open2.UseVisualStyleBackColor = false;
             this.button_Open2.Click += new System.EventHandler(this.button_Open2_Click);
@@ -247,9 +256,10 @@
             this.Image2.BackColor = System.Drawing.Color.White;
             this.Image2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Image2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Image2.Location = new System.Drawing.Point(603, 62);
+            this.Image2.Location = new System.Drawing.Point(689, 78);
+            this.Image2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Image2.Name = "Image2";
-            this.Image2.Size = new System.Drawing.Size(160, 110);
+            this.Image2.Size = new System.Drawing.Size(182, 136);
             this.Image2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Image2.TabIndex = 66;
             this.Image2.TabStop = false;
@@ -261,9 +271,10 @@
             this.button_Face.BackColor = System.Drawing.SystemColors.Control;
             this.button_Face.ImageIndex = 5;
             this.button_Face.ImageList = this.imageList1;
-            this.button_Face.Location = new System.Drawing.Point(647, 7);
+            this.button_Face.Location = new System.Drawing.Point(739, 9);
+            this.button_Face.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_Face.Name = "button_Face";
-            this.button_Face.Size = new System.Drawing.Size(38, 38);
+            this.button_Face.Size = new System.Drawing.Size(43, 48);
             this.button_Face.TabIndex = 67;
             this.button_Face.UseVisualStyleBackColor = false;
             this.button_Face.Click += new System.EventHandler(this.button_Face_Click);
@@ -278,11 +289,33 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // button_isSobel
+            // 
+            this.button_isSobel.Location = new System.Drawing.Point(12, 12);
+            this.button_isSobel.Name = "button_isSobel";
+            this.button_isSobel.Size = new System.Drawing.Size(78, 26);
+            this.button_isSobel.TabIndex = 68;
+            this.button_isSobel.Text = "isSobel";
+            this.button_isSobel.UseVisualStyleBackColor = true;
+            this.button_isSobel.Click += new System.EventHandler(this.button_isSobel_Click);
+            // 
+            // button_isDiff
+            // 
+            this.button_isDiff.Location = new System.Drawing.Point(96, 12);
+            this.button_isDiff.Name = "button_isDiff";
+            this.button_isDiff.Size = new System.Drawing.Size(78, 26);
+            this.button_isDiff.TabIndex = 69;
+            this.button_isDiff.Text = "isDiff";
+            this.button_isDiff.UseVisualStyleBackColor = true;
+            this.button_isDiff.Click += new System.EventHandler(this.button_isDiff_Click);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(775, 508);
+            this.ClientSize = new System.Drawing.Size(886, 635);
+            this.Controls.Add(this.button_isDiff);
+            this.Controls.Add(this.button_isSobel);
             this.Controls.Add(this.button_Face);
             this.Controls.Add(this.Image2);
             this.Controls.Add(this.button_Open2);
@@ -292,6 +325,7 @@
             this.Controls.Add(this.button_Record);
             this.Controls.Add(this.button_Close);
             this.Controls.Add(this.Image1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OpenCV  Part4 Camera       by Induk Univ. 윤형태 (2019.07-2020.02.20)";
@@ -329,6 +363,8 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.Button button_isSobel;
+        private System.Windows.Forms.Button button_isDiff;
     }
 }
 
