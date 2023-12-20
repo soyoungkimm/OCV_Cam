@@ -34,7 +34,12 @@ namespace OCV
         Boolean isFace = false;           // 얼굴인식 On/Off
         Boolean isSobel = false;
         Boolean isDiff = false;
+        Boolean isMoving = false;
+        Boolean isQR = false;
 
+        CascadeClassifier faceCascade = new CascadeClassifier();
+        CascadeClassifier smileCascade = new CascadeClassifier();
+    
 
         VideoWriter Record;                  // video 전용 class
 
@@ -42,23 +47,39 @@ namespace OCV
         {
             InitializeComponent();
 
+            faceCascade.Load("C:/Users/astems-SM/Documents/Visual Studio 2012/Projects/OCV2/harrcascade/haarcascade_frontalface_alt2.xml"); // 얼굴 검출
+            //faceCascade.Load("C:/Users/astems-SM/Documents/Visual Studio 2012/Projects/OCV2/harrcascade/haarcascade_eye.xml"); // 눈 검출
 
-            
+            smileCascade.Load("C:/Users/astems-SM/Documents/Visual Studio 2012/Projects/OCV2/harrcascade/haarcascade_smile.xml"); // 미소 감지
+
+
             // Timer 설정
             timer1.Interval = 33; // 30 프레임/초 (1000ms / 30fps)
             timer1.Tick += new EventHandler(timer1_Tick);
 
-            // 웹캠 연결
+            // 웹캠 연결 --------------
             video = new VideoCapture(0);
             if (!video.IsOpened())
             {
                 MessageBox.Show("웹캠을 열 수 없습니다!");
                 return;
             }
+            // -------------------------
+
+            // 자동차 영상 연결 -------------
+            /*string videoPath = @"D:\cars.mp4";
+            video = new VideoCapture(videoPath);
+            video.Read(src);
+
+            string fileName = "car_auto_save.mp4"; // 저장할 파일명 지정 
+            int fourCC = VideoWriter.FourCC('X', 'V', 'I', 'D'); // 코덱 설정 
+            double fps = 30.0; // 프레임 속도 설정 (여기서는 30fps)
+            Record = new VideoWriter(@"C:\MyImageFoler\" + fileName, fourCC, fps, new OpenCvSharp.Size(src.Width, src.Height)); // 파일명, 코덱, FPS, 해상도*/
+            // -------------------------------
 
             // 타이머 시작
-            timer1.Start(); 
-            
+            timer1.Start();
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -80,7 +101,8 @@ namespace OCV
 
 
             // sobel
-            if (isSobel) {
+            if (isSobel)
+            {
                 if (src.Empty()) return;
 
                 Cv2.CvtColor(src, dst, ColorConversionCodes.BGR2GRAY); // 그레이스케일로 변환
@@ -97,58 +119,195 @@ namespace OCV
             {
                 if (src.Empty()) return;
 
-                //Cv2.CvtColor(src, src, ColorConversionCodes.BGR2GRAY); // 그레이스케일로 변환
-
                 Mat pre_frame = new Mat();
                 Mat diff = new Mat();
                 video.Read(pre_frame);
 
-                //double temp = 30.0;
 
-                //abs = Cv2.Abs(src - pre_frame);
                 Cv2.Absdiff(src, pre_frame, diff);
 
                 Cv2.CvtColor(diff, diff, ColorConversionCodes.BGR2GRAY);
 
-                int threshold = 100; // 임계값 설정
+                int threshold = 220000; // 임계값 설정
                 int diffPixelCount = Cv2.CountNonZero(diff);
 
 
-                if (diffPixelCount > threshold) {
-                    MessageBox.Show("움직임!!!");
-                }
-
-
-                // 절대 차이에 임계값을 적용하여 움직임을 식별
-                //Mat thresholded = new Mat();
-                //Cv2.Threshold(diff, thresholded, temp, 255.0, ThresholdTypes.Binary);
-
-                // 임계값을 적용한 이미지의 픽셀 값 합산
-                //Scalar sum = Cv2.Sum(thresholded);
-
-                // 픽셀 값의 총합을 기준으로 움직임이 있는지 판단
-                //double total = sum.Val0;
-
-
-
-
-                /*if (diff > 30.0) // 필요에 따라 임계값 조절
+                if (diffPixelCount > threshold)
                 {
-                    // 움직임이 감지됨
-                    //Image1.ImageIpl = thresholded; // 차이 이미지 표시 또는 필요한 작업 수행
                     isSobel = true;
                 }
                 else
                 {
                     isSobel = false;
-                    // 유의미한 움직임이 없음
-                    // 움직임이 없는 프레임에 대한 작업을 수행하거나 비워둡니다.
-                }*/
+                    // 새로운 Mat을 생성하고 검은 화면으로 초기화
+                    int width = 877;
+                    int height = 539;
 
-                //Image1.ImageIpl = diff;
+                    Mat blackImage = new Mat(height, width, MatType.CV_8UC3, Scalar.Black);
+
+                    // PictureBoxIpl에 이미지를 표시
+                    Image1.ImageIpl = blackImage;
+                }
+
             }
-            
 
+            /*if (isFace) // 얼굴에 빨간색 사각형 띄우기
+            {
+                Rect[] faces = faceCascade.DetectMultiScale(src);  // 얼굴검출
+                foreach (var item in faces)
+                {            
+                    // 검색된 얼굴좌표(LTWH)
+                    Cv2.Rectangle(src, item, Scalar.Red, 2);  // 빨강사각형
+                    toolStripStatusLabel_Etc.Text = "faces : " + item;
+                    Image1.ImageIpl = src;
+                }
+            }*/
+
+
+            // 캠에 얼굴 인식해서 고양이 귀 삽입
+            /*if (isFace)
+            {
+                Rect[] faces = faceCascade.DetectMultiScale(src);  // 얼굴검출
+                foreach (var item in faces)
+                {            // 검색된 얼굴좌표(LTWH)
+                    //Cv2.Rectangle(src, item, Scalar.Red, 2);  // 빨강사각형
+                    toolStripStatusLabel_Etc.Text = "faces : " + item;
+                    if (Image2.Image != null)   // 고양이귀 이미지
+                    {
+                        two = Image2.ImageIpl.Clone();
+                        dst = two.Clone();
+
+                        // 고양이 귀 이미지 크기 조정
+                        Cv2.Resize(dst, dst, new OpenCvSharp.Size(dst.Width / 6, dst.Height / 6));
+                        Cv2.Resize(two, two, new OpenCvSharp.Size(two.Width / 6, two.Height / 6));
+
+                        // 마스크 생성
+                        Mat mask = new Mat();
+                        Cv2.CvtColor(dst, dst, ColorConversionCodes.BGR2GRAY); // 컬러 이미지를 흑백 이미지로 변환
+                        Cv2.Threshold(dst, mask, 100, 255, ThresholdTypes.Binary);
+                        Cv2.CvtColor(dst, dst, ColorConversionCodes.GRAY2BGR); // 컬러 이미지를 흑백 이미지로 변환
+
+
+                        // 마스크 적용하여 영역 추출
+                        Mat tmp1 = new Mat();
+                        Cv2.BitwiseAnd(two, two, tmp1, mask: mask);
+
+                        // 마스크 반전
+                        Mat mask_inv = new Mat();
+                        Cv2.BitwiseNot(mask, mask_inv);
+
+
+                        // 특정 영역 추출
+                        OpenCvSharp.Rect rect = new OpenCvSharp.Rect(item.Location.X + (mask.Width / 4), item.Location.Y - mask.Height, mask.Width, mask.Height); // 예시로 임의의 영역  133, 320
+                        Mat region = src.SubMat(rect);
+
+
+                        // 마스크 적용하여 영역 추출
+                        Mat tmp2 = new Mat();
+                        Cv2.BitwiseAnd(region, region, tmp2, mask: mask_inv);
+
+
+                        // tmp1과 tmp2를 합치기
+                        Mat tmp3 = new Mat();
+                        Cv2.Add(tmp1, tmp2, tmp3);
+
+                        tmp3.CopyTo(region);
+
+                        Image1.ImageIpl = src;
+                    }
+                }
+            }
+            */
+            if (isFace) // 얼굴인식인 경우
+            {
+                Rect[] faces = faceCascade.DetectMultiScale(src, 1.3, 5);  // 얼굴검출
+                foreach (var item in faces)
+                {
+                    // 검색된 얼굴좌표(LTWH)
+                    Cv2.Rectangle(src, item, Scalar.Red, 2);  // 빨강사각형
+
+                    Mat tmp = src.SubMat(item);
+                    Rect[] smiles = smileCascade.DetectMultiScale(tmp, 3, 10);
+                    foreach (var item_s in smiles)
+                    {
+                        Cv2.Rectangle(tmp, item_s, Scalar.Blue, 2);  // 파란 사각형
+                    }
+
+                    if (smiles.Length > 0)
+                    {
+                        string currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        Cv2.PutText(src, currentTime, new OpenCvSharp.Point(10, 30), HersheyFonts.HersheyComplex, 1.0, Scalar.Red, 2); // 텍스트 추가
+
+                        string fileName = "smile.png"; // 저장할 파일명 지정 
+                        string filePath = @"C:\MyImageFoler\" + fileName; // 파일 경로
+                        Mat result = src.Clone();
+                        Cv2.ImWrite(filePath, result);
+                        Cv2.ImShow("미소감지", src);
+                    }
+                    else {
+                      
+                        Cv2.PutText(src, " ", new OpenCvSharp.Point(10, 30), HersheyFonts.HersheyComplex, 1.0, Scalar.Red, 2); // 텍스트 추가
+
+                        
+                    }
+
+                }
+
+                Image1.ImageIpl = src;
+            }
+
+
+
+            if (isQR) {
+                
+                Cv2.Rectangle(src, new OpenCvSharp.Point(100, 100), new OpenCvSharp.Point(400, 400), Scalar.Red, 2);
+                Image1.ImageIpl = src;
+                // (500, 200, 300, 300) 영역 crop 이미지
+                Mat tmp1 = src.SubMat(new Rect(100, 100, 300, 300));
+               
+               // 이진 이미지로 변환
+                Mat gray = new Mat();
+                Cv2.CvtColor(tmp1, gray, ColorConversionCodes.BGR2GRAY);
+                Cv2.Threshold(gray, gray, 128, 255, ThresholdTypes.Binary);
+
+                // QR 코드 검출
+                QRCodeDetector detector = new QRCodeDetector();
+                OpenCvSharp.Point2f[] point2;
+                Mat straightQrCode = new Mat();
+                string decodedText = detector.DetectAndDecode(gray, out point2, straightQrCode);
+
+                if (!string.IsNullOrEmpty(decodedText))
+                {
+                    isQR = false;
+                    MessageBox.Show(decodedText, "QR Code");
+                }
+            }
+
+
+
+            if (isRecording)  // 녹화중인 경우
+            {
+                video.Read(dst);
+
+                const double threshold = 3.0; // 임계값 설정
+
+                Mat diff = new Mat();
+                Cv2.Absdiff(dst, src, diff); // 차이 이미지 계산
+
+                Scalar mean = Cv2.Mean(diff); // 평균값 계산
+
+                bool isMoving = mean.Val0 > threshold || mean.Val1 > threshold || mean.Val2 > threshold;
+
+                if (isMoving)
+                {
+                    string currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    Cv2.PutText(src, currentTime, new OpenCvSharp.Point(10, 30), HersheyFonts.HersheyComplex, 1.0, Scalar.Red, 2); // 텍스트 추가
+
+                    Record.Write(src); // 동영상 저장
+                }
+                Image1.ImageIpl = src;
+
+            }
 
 
             /*if (isRecording)  // 녹화중인 경우
@@ -163,11 +322,7 @@ namespace OCV
                 }
             }
 
-            if (isFace) // 얼굴인식인 경우
-            {
-
-
-            }*/
+           */
 
 
         }
@@ -214,12 +369,13 @@ namespace OCV
         private void button_Record_Click(object sender, EventArgs e)
         {
             isRecording = !isRecording;
-            if (isRecording)
+
+            /*if (isRecording)
             {
                 button_Record.ImageIndex = 2;   // 버튼이미지 : ●
 
-                string fileName = "output.mp4"; // 저장할 파일명 지정 (확장자에 주의하세요)
-                int fourCC = VideoWriter.FourCC('X', 'V', 'I', 'D'); // 코덱 설정 (여기서는 XVID를 사용합니다)
+                string fileName = "output.mp4"; // 저장할 파일명 지정 
+                int fourCC = VideoWriter.FourCC('X', 'V', 'I', 'D'); // 코덱 설정 
                 double fps = 30.0; // 프레임 속도 설정 (여기서는 30fps)
 
                 Record = new VideoWriter(@"C:\MyImageFoler\" + fileName, fourCC, fps, new OpenCvSharp.Size(640, 480)); // 파일명, 코덱, FPS, 해상도
@@ -239,7 +395,7 @@ namespace OCV
                 isRecording = false;
                 Record.Dispose();
 
-            }
+            }*/
         }
         //------------------------------------------------------------------
         // Button: Video Play
@@ -254,7 +410,8 @@ namespace OCV
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 // 선택한 동영상 파일명으로 VideoCapture 객체 생성
-                VideoCapture video1 = new VideoCapture(openFileDialog1.FileName);
+               
+                VideoCapture video1 = new VideoCapture(@openFileDialog1.FileName);
 
                 if (!video1.IsOpened())
                 {
@@ -262,6 +419,44 @@ namespace OCV
                     return;
                 }
 
+
+                // 보행자 검출 -----------------------------------------------------------------
+                BackgroundSubtractorMOG2 mog2 = BackgroundSubtractorMOG2.Create();
+                Mat mask = new Mat();
+              
+               
+                while (true)
+                {
+                    video1.Read(src);
+                    Cv2.WaitKey(1);
+                    
+
+                    // 배경 제거
+                    mog2.Apply(src, mask);
+
+                  
+                    // 경계 찾기 
+                    var contours = new OpenCvSharp.Point[][] { };
+                    var hierarchy = new HierarchyIndex[] { };
+                    Cv2.FindContours(mask, out contours, out hierarchy, RetrievalModes.List, ContourApproximationModes.ApproxSimple);
+
+                    foreach (OpenCvSharp.Point[] contour in contours)
+                    {
+                        double area = Cv2.ContourArea(contour); // 컨투어 영역 계산
+
+                        if (area > 500) // 예시로 설정된 보행자 면적
+                        {
+                            // 사각형 그리기
+                            Rect rect = Cv2.BoundingRect(contour);
+                            Cv2.Rectangle(src, rect, Scalar.Red, 2); // 빨간색 사각형 그리기
+                        }
+                    }
+
+                    Image1.ImageIpl = src;
+                }
+                // -------------------------------------------------------------------------------
+
+                /*
                 // PictureBox에 이미지 표시 준비
                 Image1.SizeMode = PictureBoxSizeMode.StretchImage; // 이미지가 PictureBox에 맞게 조절되도록 설정
 
@@ -287,7 +482,7 @@ namespace OCV
                     }
                 }
 
-                video1.Dispose(); // 동영상 재생이 끝나면 VideoCapture 객체 해제
+                video1.Dispose(); // 동영상 재생이 끝나면 VideoCapture 객체 해제*/
 
 
             }
@@ -304,7 +499,7 @@ namespace OCV
         //------------------------------------------------------------------
         private void button_Face_Click(object sender, EventArgs e)
         {
-            isFace = ! isFace;
+            isFace = !isFace;
             if (isFace)
                 button_Face.ImageIndex = 6;  // 버튼이미지: 얼굴+사각
             else
@@ -322,9 +517,9 @@ namespace OCV
                 string Document_Format = Image1_Filename.Substring(Image1_Filename.Length - 3, 3).ToUpper();
                 if (Document_Format == "BMP" || Document_Format == "JPG" || Document_Format == "PNG")
                 {
-                    src = Cv2.ImRead(openFileDialog1.FileName, ImreadModes.Color);
-                    Image1.ImageIpl = src;
-                    Image1.Visible = true;
+                    two = Cv2.ImRead(openFileDialog1.FileName, ImreadModes.Color);
+                    Image2.ImageIpl = two;
+                    Image2.Visible = true;
                 }
                 else
                     MessageBox.Show("JPG, PNG, BMP 만 사용할 수 있습니다.", "에러",
@@ -352,6 +547,13 @@ namespace OCV
         {
             isDiff = !isDiff;
         }
+
+        private void button_QR_Click(object sender, EventArgs e)
+        {
+            isQR = true;
+        }
+
+        
 
     }
 }
